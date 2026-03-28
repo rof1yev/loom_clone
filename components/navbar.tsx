@@ -33,7 +33,12 @@ const Navbar = () => {
                 className="rounded-full aspect-square"
               />
             </button>
-            <button className="cursor-pointer">
+            <button
+              type="button"
+              className="cursor-pointer"
+              onClick={() => {}}
+              aria-label="Log out"
+            >
               <Image
                 src="/assets/icons/logout.svg"
                 alt="logout"
