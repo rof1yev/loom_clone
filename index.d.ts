@@ -21,7 +21,7 @@ declare interface FormFieldProps {
   type?: string;
   value: string;
   onChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => void;
   placeholder?: string;
   as?: "input" | "textarea" | "select";
@@ -77,7 +77,7 @@ declare interface VideoCardProps {
   username: string;
   createdAt: Date;
   views: number;
-  visibility: Visibility;
+  visibility: string;
   duration: number | null;
 }
 

@@ -9,7 +9,13 @@ const DropdownList = () => {
 
   return (
     <div className="relative">
-      <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+      <div
+        role="button"
+        className="cursor-pointer"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+      >
         <div className="filter-trigger">
           <figure>
             <Image

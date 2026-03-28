@@ -49,7 +49,11 @@ const Header = ({ subHeader, title, userImg }: SharedHeaderProps) => {
 
       <section className="search-filter">
         <div className="search">
+          <label htmlFor="video-search" className="sr-only">
+            Search videos
+          </label>
           <input
+            id="video-search"
             type="text"
             placeholder="Search for videos, tags, folders ..."
           />
