@@ -9,7 +9,7 @@ const DropdownList = () => {
 
   return (
     <div className="relative">
-      <div
+      <button
         role="button"
         className="cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
@@ -33,7 +33,7 @@ const DropdownList = () => {
             height={16}
           />
         </div>
-      </div>
+      </button>
 
       {isOpen && (
         <ul className="dropdown">
