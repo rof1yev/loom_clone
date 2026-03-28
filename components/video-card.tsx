@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 
 const VideoCard = ({
   id,
@@ -14,16 +14,20 @@ const VideoCard = ({
   visibility,
   duration,
 }: VideoCardProps) => {
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<boolean>(false);
 
-  const handleCopy = (e: React.MouseEvent) => {
+  const handleCopy = async (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     e.preventDefault();
-    navigator.clipboard.writeText(`${window.location.origin}/video/${id}`);
-    setCopied(true);
-    setTimeout(() => {
+    try {
+      await navigator.clipboard.writeText(
+        `${window.location.origin}/video/${id}`,
+      );
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 3000);
+    } catch {
       setCopied(false);
-    }, 3000);
+    }
   };
 
   return (
@@ -69,7 +73,11 @@ const VideoCard = ({
           })}
         </h2>
       </article>
-      <button onClick={handleCopy} className="copy-btn">
+      <button
+        onClick={handleCopy}
+        className="copy-btn"
+        aria-label="Copy video link"
+      >
         <Image
           src={
             copied ? "/assets/icons/checkmark.svg" : "/assets/icons/link.svg"
@@ -79,7 +87,7 @@ const VideoCard = ({
           height={18}
         />
       </button>
-      {duration && (
+      {duration != null && (
         <div className="duration">{Math.ceil(duration / 60)}min</div>
       )}
     </Link>
