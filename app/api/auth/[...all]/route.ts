@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { toNextJsHandler } from "better-auth/next-js";
 import aj from "@/lib/arcjet";
@@ -30,10 +30,14 @@ const protectedAuth = async (req: NextRequest): Promise<ArcjetDecision> => {
   else userId = ip(req) || "127.0.0.1";
 
   if (req.nextUrl.pathname.startsWith("/api/auth/sign-in")) {
-    const body = await req.clone().json();
+    try {
+      const body = await req.clone().json();
 
-    if (typeof body.email === "string")
-      return emailValidation.protect(req, { email: body.email });
+      if (typeof body.email === "string")
+        return emailValidation.protect(req, { email: body.email });
+    } catch (e) {
+      console.error("Failed to parse request body for email validation:", e);
+    }
   }
 
   return rateLimit.protect(req, { fingerprint: userId });
@@ -46,17 +50,22 @@ export const { GET } = authHandler;
 export const POST = async (req: NextRequest) => {
   const decision = await protectedAuth(req);
 
-  if (decision.isDenied()) {
-    if (decision.reason.isEmail())
-      throw new Error(
-        "Email verification failed. Please use a valid email address.",
-      );
+  if (decision.reason.isEmail()) {
+    return NextResponse.json(
+      { error: "Email verification failed. Please use a valid email address." },
+      { status: 400 },
+    );
+  }
 
-    if (decision.reason.isRateLimit())
-      throw new Error("Too many requests. Please try again later.");
+  if (decision.reason.isRateLimit()) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429 },
+    );
+  }
 
-    if (decision.reason.isShield())
-      throw new Error("Shield turned on, protected against malicious actions");
+  if (decision.reason.isShield()) {
+    return NextResponse.json({ error: "Request blocked" }, { status: 403 });
   }
 
   return authHandler.POST(req);

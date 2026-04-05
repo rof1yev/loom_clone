@@ -20,7 +20,7 @@ export async function proxy(request: NextRequest) {
 const validate = aj.withRule(shield({ mode: "LIVE" })).withRule(
   detectBot({
     mode: "LIVE",
-    allow: ["CATEGORY:SEARCH_ENGINE", "G00G1E_CRAWLER"],
+    allow: ["CATEGORY:SEARCH_ENGINE"],
   }),
 );
 

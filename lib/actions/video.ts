@@ -46,7 +46,7 @@ const validateWithArcjet = async (fingerprint: string) => {
 
   const decision = await rateLimit.protect(req, { fingerprint });
 
-  if (!decision.isDenied)
+  if (decision.isDenied())
     throw new Error("Rate limit exceeded. Please try again later.");
 };
 
