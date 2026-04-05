@@ -77,7 +77,7 @@ declare interface VideoCardProps {
   username: string;
   createdAt: Date;
   views: number;
-  visibility: string;
+  visibility: Visibility;
   duration: number | null;
 }
 
@@ -88,7 +88,7 @@ declare interface VideoDetailHeaderProps {
   username?: string;
   videoId: string;
   ownerId: string;
-  visibility: string;
+  visibility: Visibility;
   thumbnailUrl: string;
 }
 
@@ -111,7 +111,7 @@ declare interface ImageWithFallbackProps extends Omit<ImageProps, "src"> {
   src: string | null;
 }
 
-type Visibility = "public" | "private";
+type Visibility = "public" | "private" | string;
 
 declare interface VideoDetails {
   videoId: string;
